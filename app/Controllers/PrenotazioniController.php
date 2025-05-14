@@ -8,8 +8,16 @@ class PrenotazioniController extends BaseController
 {
     public function crea($id)
     {
+        $risorsaModel = new \App\Models\RisorsaModel();
+        $risorsa = $risorsaModel->find($id);
+
+        if (session('user')['ruolo'] === 'studente' && $risorsa['tipo'] !== 'aula_studio') {
+            return redirect()->to(base_url('home'))->with('error', 'Puoi prenotare solo le aule studio.');
+        }
+
         return view('prenota', ['risorsa_id' => $id]);
     }
+
 
     public function salva()
     {

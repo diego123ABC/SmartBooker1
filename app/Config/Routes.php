@@ -17,3 +17,13 @@ $routes->get('/prenotazioni', 'PrenotazioniController::miePrenotazioni', ['filte
 $routes->get('/prenota/(:num)', 'PrenotazioniController::crea/$1', ['filter' => 'auth']);
 $routes->get('/prenotazioni/annulla/(:num)', 'PrenotazioniController::annulla/$1', ['filter' => 'auth']);
 $routes->post('/prenota', 'PrenotazioniController::salva', ['filter' => 'auth']);
+
+$routes->group('admin', ['filter' => 'auth'], function($routes) {
+    $routes->get('risorse', 'AdminController::indexRisorse');
+    $routes->get('risorse/nuova', 'AdminController::nuovaRisorsa');
+    $routes->post('risorse/crea', 'AdminController::creaRisorsa');
+    $routes->get('risorse/elimina/(:num)', 'AdminController::eliminaRisorsa/$1');
+
+    $routes->get('prenotazioni', 'AdminController::listaPrenotazioni');
+    $routes->get('prenotazioni/elimina/(:num)', 'AdminController::eliminaPrenotazione/$1');
+});

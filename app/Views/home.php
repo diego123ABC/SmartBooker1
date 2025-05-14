@@ -16,6 +16,12 @@
     <strong>Stampanti</strong><br>
     <a href="<?= base_url('risorse/stampante') ?>">Visualizza Stampanti</a>
   </li>
+  <?php if (session('user')['ruolo'] === 'studente'): ?>
+    <li>
+      <strong>Aule Studio</strong><br>
+      <a href="<?= base_url('risorse/aula_studio') ?>">Visualizza Aule Studio</a>
+    </li>
+  <?php endif; ?>
 </ul>
 
 <?= $this->endSection() ?>

@@ -12,10 +12,18 @@
   <?php if (session()->has('user')): ?>
     <nav>
       <a href="<?= base_url('home') ?>">Home</a>
-      <a href="<?= base_url('prenotazioni') ?>">Le mie prenotazioni</a>
+
+      <?php if (session('user')['ruolo'] === 'admin'): ?>
+        <a href="<?= base_url('admin/risorse') ?>">Gestione Risorse</a>
+        <a href="<?= base_url('admin/prenotazioni') ?>">Gestione Prenotazioni</a>
+      <?php else: ?>
+        <a href="<?= base_url('prenotazioni') ?>">Le mie prenotazioni</a>
+      <?php endif; ?>
+
       <a href="<?= base_url('logout') ?>">Logout</a>
     </nav>
-  <?php endif; ?>
+  <?php endif; ?> 
+
 </header>
 
 <main class="container">
