@@ -17,18 +17,36 @@ class AuthController extends BaseController
     }
 
     public function attemptLogin()
-    {
-        $session = session();
-        $model = new UtenteModel();
-        $user = $model->where('email', $this->request->getPost('email'))->first();
+{
+    $session = session();
+    $model   = new UtenteModel();
+    $email   = $this->request->getPost('email');
+    $pass    = $this->request->getPost('password');
 
-        if ($user && $user['password'] === $this->request->getPost('password')) {
-            $session->set(['user' => $user]);
-            return redirect()->to(base_url('home'))->with('success', 'Accesso effettuato con successo');
+    // Recupera l’utente per email
+    $user = $model->where('email', $email)->first();
+
+    // Verifica che esista e che la password corrisponda
+    if ($user && password_verify($pass, $user['password'])) {
+        // (Opzionale) Re-hash se il cost factor è cambiato
+        if (password_needs_rehash($user['password'], PASSWORD_DEFAULT)) {
+            $model->update($user['id'], [
+                'password' => password_hash($pass, PASSWORD_DEFAULT),
+            ]);
         }
 
-        return redirect()->to(base_url())->with('error', 'Credenziali non valide');
+        // Salva i dati in sessione (non includere mai l’hash!)
+        unset($user['password']);
+        $session->set('user', $user);
+
+        return redirect()->to(base_url('home'))
+                         ->with('success', 'Accesso effettuato con successo');
     }
+
+    return redirect()->to(base_url())
+                     ->with('error', 'Credenziali non valide');
+}
+
 
     public function attemptRegister()
     {
@@ -43,7 +61,7 @@ class AuthController extends BaseController
         $model->insert([
             'nome'     => $this->request->getPost('nome'),
             'email'    => $email,
-            'password' => $this->request->getPost('password'),
+            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
             'ruolo'    => $this->request->getPost('ruolo'),
         ]);
 

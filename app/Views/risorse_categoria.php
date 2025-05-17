@@ -1,7 +1,7 @@
 <?= $this->extend('layout') ?>
 <?= $this->section('content') ?>
 
-<h2><?= esc($tipo) ?></h2>
+
 
 <ul class="risorse">
 <?php foreach ($risorse as $risorsa): ?>

@@ -16,9 +16,21 @@ class HomeController extends BaseController
         $model = new RisorsaModel();
         $data = [
             'tipo' => ucfirst($tipo),
-            'risorse' => $model->where('tipo', $tipo)->findAll(),
+            'risorse' => $model->findAvailableByType($tipo)
         ];
-
+        
         return view('risorse_categoria', $data);
+    }
+
+    public function filtraRisorse()
+    {
+        $tipo = $this->request->getGet('tipo');
+        $data_inizio = $this->request->getGet('data_inizio');
+        $data_fine = $this->request->getGet('data_fine');
+
+        $model = new RisorsaModel();
+        $risorse = $model->filterResources($tipo, $data_inizio, $data_fine);
+
+        return view('risorse_categoria', ['risorse' => $risorse, 'data_inizio' => $data_inizio, 'data_fine' => $data_fine]);
     }
 }

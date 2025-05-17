@@ -10,7 +10,7 @@ $routes->get('/register', 'AuthController::register');
 $routes->post('/register', 'AuthController::attemptRegister');
 $routes->post('/login', 'AuthController::attemptLogin');
 $routes->get('/logout', 'AuthController::logout');
-
+$routes->get('/risorse/filtra', 'HomeController::filtraRisorse');
 // Filtro 'auth' per verificare che l'utente abbia effettuato il login
 $routes->get('/risorse/(:segment)', 'HomeController::categoria/$1', ['filter' => 'auth']);
 $routes->get('/home', 'HomeController::index', ['filter' => 'auth']);

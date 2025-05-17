@@ -6,6 +6,13 @@ use App\Models\PrenotazioneModel;
 
 class PrenotazioniController extends BaseController
 {
+    public function __construct()
+    {
+        // Inietta il service dal container
+        $this->prenotazioneService = service('prenotazioneService');
+    }
+
+
     public function crea($id)
     {
         $risorsaModel = new \App\Models\RisorsaModel();
@@ -58,9 +65,21 @@ class PrenotazioniController extends BaseController
         return redirect()->to(base_url('prenotazioni'))->with('success', 'Prenotazione annullata con successo.');
     }
 
+    private function aggiornaStatoPrenotazioni()
+{
+    // Esegue l’update e recupera il numero di righe cambiate
+        $count = $this->prenotazioneService->aggiornaScadute();
+
+        // (Opzionale) Flash message per debugging o UI
+        if ($count > 0) {
+            session()->setFlashdata('success', "Aggiornate {$count} prenotazioni scadute.");
+        }
+}
 
     public function miePrenotazioni()
     {
+
+        $this->aggiornaStatoPrenotazioni();
         $model = new PrenotazioneModel();
         $db = \Config\Database::connect();
 

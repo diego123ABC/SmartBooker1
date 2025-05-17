@@ -29,4 +29,13 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+    public static function prenotazioneService($getShared = true)
+{
+    if ($getShared)
+    {
+        return static::getSharedInstance('prenotazioneService');
+    }
+    return new \App\Services\PrenotazioneService();
+}
+
 }
