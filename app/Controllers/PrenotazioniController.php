@@ -22,7 +22,7 @@ class PrenotazioniController extends BaseController
             return redirect()->to(base_url('home'))->with('error', 'Puoi prenotare solo le aule studio.');
         }
 
-        return view('prenota', ['risorsa_id' => $id]);
+        return view('prenota', ['risorsa_id' => $risorsa['id']]);
     }
 
 
