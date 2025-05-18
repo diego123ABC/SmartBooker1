@@ -17,35 +17,35 @@ class AuthController extends BaseController
     }
 
     public function attemptLogin()
-{
-    $session = session();
-    $model   = new UtenteModel();
-    $email   = $this->request->getPost('email');
-    $pass    = $this->request->getPost('password');
+    {
+        $session = session();
+        $model   = new UtenteModel();
+        $email   = $this->request->getPost('email');
+        $pass    = $this->request->getPost('password');
 
-    // Recupera l’utente per email
-    $user = $model->where('email', $email)->first();
+        // Recupera l’utente per email
+        $user = $model->where('email', $email)->first();
 
-    // Verifica che esista e che la password corrisponda
-    if ($user && password_verify($pass, $user['password'])) {
-        // (Opzionale) Re-hash se il cost factor è cambiato
-        if (password_needs_rehash($user['password'], PASSWORD_DEFAULT)) {
-            $model->update($user['id'], [
-                'password' => password_hash($pass, PASSWORD_DEFAULT),
-            ]);
+        // Verifica che esista e che la password corrisponda
+        if ($user && password_verify($pass, $user['password'])) {
+            // (Opzionale) Re-hash se il cost factor è cambiato
+            if (password_needs_rehash($user['password'], PASSWORD_DEFAULT)) {
+                $model->update($user['id'], [
+                    'password' => password_hash($pass, PASSWORD_DEFAULT),
+                ]);
+            }
+
+            // Salva i dati in sessione (non includere mai l’hash!)
+            unset($user['password']);
+            $session->set('user', $user);
+
+            return redirect()->to(base_url('home'))
+                            ->with('success', 'Accesso effettuato con successo');
         }
 
-        // Salva i dati in sessione (non includere mai l’hash!)
-        unset($user['password']);
-        $session->set('user', $user);
-
-        return redirect()->to(base_url('home'))
-                         ->with('success', 'Accesso effettuato con successo');
+        return redirect()->to(base_url())
+                        ->with('error', 'Credenziali non valide');
     }
-
-    return redirect()->to(base_url())
-                     ->with('error', 'Credenziali non valide');
-}
 
 
     public function attemptRegister()
