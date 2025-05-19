@@ -20,8 +20,7 @@ class RisorsaModel extends Model {
                    'left')
             // filtro sul tipo
             ->where('risorse.tipo', $tipo)
-            // lasciamo passare solo quelle che non hanno joinato nulla
-            ->where('p.id IS NULL')
+            ->where('(p.id IS NULL OR CURDATE() > p.data_fine OR CURDATE() < p.data_inizio)')
             ->get()
             ->getResultArray();
     }

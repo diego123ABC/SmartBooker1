@@ -6,7 +6,7 @@
   <h2>Cerca disponibilità</h2>
   
   <label for="tipo">Tipo di risorsa:</label>
-  <select name="tipo">
+  <select name="tipo" required>
     <option value="">-- Seleziona tipo --</option>
     <option value="aula" <?= set_select('tipo', 'aula') ?>>Aule</option>
     <option value="laboratorio" <?= set_select('tipo', 'laboratorio') ?>>Laboratori</option>
@@ -17,10 +17,10 @@
   </select>
 
   <label for="data_inizio">Data inizio:</label>
-  <input type="date" name="data_inizio" id="data_inizio" value="<?= set_value('data_inizio') ?>">
+  <input type="date" name="data_inizio" id="data_inizio" value="<?= set_value('data_inizio') ?>" required>
 
   <label for="data_fine">Data fine:</label>
-  <input type="date" name="data_fine" id="data_fine" value="<?= set_value('data_fine') ?>">
+  <input type="date" name="data_fine" id="data_fine" value="<?= set_value('data_fine') ?>" required>
 
   <button type="submit">Filtra</button>
 </form>

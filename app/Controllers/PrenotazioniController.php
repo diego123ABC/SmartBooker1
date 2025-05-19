@@ -22,7 +22,7 @@ class PrenotazioniController extends BaseController
             return redirect()->to(base_url('home'))->with('error', 'Puoi prenotare solo le aule studio.');
         }
 
-        return view('prenota', ['risorsa_id' => $risorsa['id']]);
+        return view('prenota', ['risorsa' => $risorsa]);
     }
 
 
@@ -35,6 +35,59 @@ class PrenotazioniController extends BaseController
             'data_inizio' => $this->request->getPost('data_inizio'),
             'data_fine'   => $this->request->getPost('data_fine'),
         ];
+        // Controlla se la risorsa è una stampante e la durata supera 1 ora
+        $risorsaModel = new \App\Models\RisorsaModel();
+        $risorsa = $risorsaModel->find($data['risorsa_id']);
+        if ($risorsa) {
+            $inizio = strtotime($data['data_inizio']);
+            $fine = strtotime($data['data_fine']);
+            $durata = $fine - $inizio;
+
+            if ($risorsa['tipo'] === 'stampante') {
+                // Solo 1 ora esatta
+                if ($durata !== 3600) {
+                    return redirect()->back()->with('error', 'Le stampanti possono essere prenotate per 1 e una sola ora.');
+                }
+            } elseif (
+                in_array($risorsa['tipo'], ['laboratorio', 'aula', 'aula_studio'])
+            ) {
+                // Minimo 2 ore, massimo 10 ore (dalle 8:00 alle 18:00)
+                $oraInizio = (int)date('H', $inizio);
+                $oraFine = (int)date('H', $fine);
+                $minInizio = (int)date('i', $inizio);
+                $minFine = (int)date('i', $fine);
+
+                // Controlla che sia nello stesso giorno
+                if (date('Y-m-d', $inizio) !== date('Y-m-d', $fine)) {
+                    return redirect()->back()->with('error', 'La prenotazione deve essere nello stesso giorno.');
+                }
+
+                // Controlla fascia oraria 8:00-18:00
+                if (
+                    $oraInizio < 8 ||
+                    $oraFine > 18 ||
+                    ($oraFine === 18 && $minFine > 0) ||
+                    ($oraInizio === 18 && $minInizio > 0)
+                ) {
+                    return redirect()->back()->with('error', 'Le prenotazioni sono consentite solo tra le 8:00 e le 18:00.');
+                }
+
+                // Minimo 2 ore, massimo 10 ore
+                if ($durata < 7200) {
+                    return redirect()->back()->with('error', 'La prenotazione deve durare almeno 2 ore.');
+                }
+                if ($durata > 36000) {
+                    return redirect()->back()->with('error', 'La prenotazione può durare al massimo una giornata (10 ore).');
+                }
+            }
+        }
+        if ($risorsa && $risorsa['tipo'] === 'stampante') {
+            $inizio = strtotime($data['data_inizio']);
+            $fine = strtotime($data['data_fine']);
+            if (($fine - $inizio) > 3600) {
+                return redirect()->back()->with('error', 'Le stampanti possono essere prenotate per massimo 1 ora.');
+            }
+        }
 
         if (!$data['data_inizio'] || !$data['data_fine']) {
             return redirect()->back()->with('error', 'Inserisci una data valida per la prenotazione');
