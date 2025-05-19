@@ -9,6 +9,19 @@
     <li>I <b>laboratori</b>, <b>aule</b> e le <b>aule_studio</b> possono essere prenotati per <b>minimo 2 ore</b> e <b>massimo una giornata</b> (dalle 8:00 alle 18:00).</li>
   </ul>
 </div>
+<?php if (!empty($dateOccupate)): ?>
+  <div class="alert alert-warning" style="margin-bottom: 1em; padding: 1em; background: #fff3cd; border: 1px solid #ffeeba;">
+    <strong>Attenzione:</strong> La risorsa è già occupata nelle seguenti date e orari:
+    <ul>
+      <?php foreach ($dateOccupate as $periodo): ?>
+        <li>
+          <?= esc(date('d/m/Y H:i', strtotime($periodo['data_inizio']))) ?> - 
+          <?= esc(date('d/m/Y H:i', strtotime($periodo['data_fine']))) ?>
+        </li>
+      <?php endforeach; ?>
+    </ul>
+  </div>
+<?php endif; ?>
 <form method="post" action="<?= base_url('prenota') ?>">
   <input type="hidden" name="risorsa_id" value="<?= esc($risorsa['id']) ?>">
   <label>Data Inizio</label>

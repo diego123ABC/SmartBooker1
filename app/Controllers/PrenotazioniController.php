@@ -11,18 +11,35 @@ class PrenotazioniController extends BaseController
         // Inietta il service dal container
         $this->prenotazioneService = service('prenotazioneService');
     }
+    public function dateOccupate($risorsa_id)
+    {
+        $model = new PrenotazioneModel();
+        $prenotazioni = $model->where('risorsa_id', $risorsa_id)
+            ->where('stato', 'attiva')
+            ->findAll();
 
+        $dateOccupate = [];
+        foreach ($prenotazioni as $prenotazione) {
+            $dateOccupate[] = [
+                'data_inizio' => $prenotazione['data_inizio'],
+                'data_fine' => $prenotazione['data_fine'],
+            ];
+        }
+
+        return $dateOccupate;
+    }
 
     public function crea($id)
     {
         $risorsaModel = new \App\Models\RisorsaModel();
         $risorsa = $risorsaModel->find($id);
-
+        // Recupera le date occupate per la risorsa
+        $dateOccupate = $this->dateOccupate($id);
         if (session('user')['ruolo'] === 'studente' && $risorsa['tipo'] !== 'aula_studio') {
             return redirect()->to(base_url('home'))->with('error', 'Puoi prenotare solo le aule studio.');
         }
 
-        return view('prenota', ['risorsa' => $risorsa]);
+        return view('prenota', ['risorsa' => $risorsa, 'dateOccupate' => $dateOccupate]);
     }
 
 
