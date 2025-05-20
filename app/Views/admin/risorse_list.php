@@ -13,6 +13,7 @@
     <?php if (!empty($r['image'])): ?>
       <img src="<?= base_url($r['image']) ?>" style="width:100px; margin-top:5px; border-radius:4px;"><br>
     <?php endif; ?>
+    <a class="btn" href="<?= base_url('admin/risorse/modifica/' . $r['id']) ?>" style="color:orange;">Modifica</a>
     <a class="btn" href="<?= base_url('admin/risorse/elimina/' . $r['id']) ?>" style="color:red;">Elimina</a>
   </li>
 <?php endforeach; ?>

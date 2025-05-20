@@ -11,7 +11,10 @@
       Dal: <?= date('d/m/Y H:i', strtotime($p['data_inizio'])) ?> al <?= date('d/m/Y H:i', strtotime($p['data_fine'])) ?><br>
       Stato: <?= ucfirst($p['stato']) ?>
     </small><br>
-    <a href="<?= base_url('admin/prenotazioni/elimina/' . $p['id']) ?>" class="btn" style="color:red;">Elimina</a>
+    <?php if ($p['stato'] === 'attiva'): ?>
+      <a href="<?= base_url('admin/prenotazioni/elimina/' . $p['id']) ?>" class="btn" style="color:red;">Elimina</a>
+    <?php endif; ?>
+    
   </li>
 <?php endforeach; ?>
 </ul>

@@ -59,6 +59,25 @@ class AdminController extends BaseController
         return view('admin/prenotazioni_list', ['prenotazioni' => $query->getResultArray()]);
     }
 
+    public function modificaRisorsa($id)
+    {      
+        $model = new RisorsaModel();
+        
+        $risorsa = $model->find($id);
+        return view('admin/risorsa_modifica', ['risorsa' => $risorsa]);
+    }
+    public function aggiornaRisorsa($id)
+    {
+        $model = new RisorsaModel();
+        $model->update($id, [
+            'nome' => $this->request->getPost('nome'),
+            'descrizione' => $this->request->getPost('descrizione'),
+            'image' => $this->request->getPost('image')
+        ]);
+
+        return redirect()->to(base_url('admin/risorse'))->with('success', 'Risorsa aggiornata.');
+    }
+
     public function eliminaPrenotazione($id)
     {
         (new PrenotazioneModel())->delete($id);
