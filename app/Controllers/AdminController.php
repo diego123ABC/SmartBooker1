@@ -27,6 +27,8 @@ class AdminController extends BaseController
 
     public function creaRisorsa()
 {
+    helper(['form']);
+
     $model = new \App\Models\RisorsaModel();
 
     $file = $this->request->getFile('image');
@@ -47,6 +49,7 @@ class AdminController extends BaseController
 
     return redirect()->to(base_url('admin/risorse'))->with('success', 'Risorsa creata con successo.');
 }
+
 
 
     public function eliminaRisorsa($id)

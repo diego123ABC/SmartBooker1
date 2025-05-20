@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class RisorsaModel extends Model {
   protected $table = 'risorse';
-  protected $allowedFields = ['nome', 'tipo', 'disponibilita', 'descrizione'];
+  protected $allowedFields = ['nome', 'tipo', 'descrizione' , 'image'];
   protected $returnType = 'array';
 
 

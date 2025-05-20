@@ -9,7 +9,6 @@
   <select name="ruolo" required>
     <option value="studente">Studente</option>
     <option value="docente">Docente</option>
-    <option value="admin">Admin</option>
   </select>
   <button type="submit">Registrati</button>
 </form>

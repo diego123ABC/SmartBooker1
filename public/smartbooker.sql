@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 14, 2025 alle 18:59
+-- Creato il: Mag 20, 2025 alle 23:36
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `smartbooker`
 --
-CREATE DATABASE IF NOT EXISTS `smartbooker` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `smartbooker`;
 
 -- --------------------------------------------------------
 
@@ -43,7 +41,7 @@ CREATE TABLE `prenotazioni` (
 --
 
 INSERT INTO `prenotazioni` (`id`, `utente_id`, `risorsa_id`, `data_inizio`, `data_fine`, `stato`) VALUES
-(3, 1, 3, '2025-05-14 18:04:00', '2025-05-16 18:04:00', 'attiva');
+(3, 1, 3, '2025-05-14 18:04:00', '2025-05-16 18:04:00', 'completata');
 
 -- --------------------------------------------------------
 
@@ -55,7 +53,6 @@ CREATE TABLE `risorse` (
   `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `tipo` enum('aula','laboratorio','stampante','aula_studio') NOT NULL,
-  `disponibilita` tinyint(1) DEFAULT 1,
   `descrizione` varchar(255) DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -64,13 +61,13 @@ CREATE TABLE `risorse` (
 -- Dump dei dati per la tabella `risorse`
 --
 
-INSERT INTO `risorse` (`id`, `nome`, `tipo`, `disponibilita`, `descrizione`, `image`) VALUES
-(1, 'Lab1', 'laboratorio', 1, 'Bello', 'images/lab1.jpg'),
-(2, 'Aula1', 'aula', 1, 'Bella', 'images/aula1.jpg'),
-(3, 'Stampante1', 'stampante', 1, 'Bella', 'images/stampante1.jpg'),
-(4, 'Lab2', 'laboratorio', 1, 'Bello', 'images/lab2.jpg'),
-(5, 'Aula2', 'aula', 1, 'Bella', 'images/aula2.jpg'),
-(6, 'Aula_studio1', 'aula_studio', 1, 'Bella', 'images/aula_studio1.jpg');
+INSERT INTO `risorse` (`id`, `nome`, `tipo`, `descrizione`, `image`) VALUES
+(1, 'Lab1', 'laboratorio', 'Bello', 'images/lab1.jpg'),
+(2, 'Aula1', 'aula', 'Bella', 'images/aula1.jpg'),
+(3, 'Stampante1', 'stampante', 'Bella', 'images/stampante1.jpg'),
+(4, 'Lab2', 'laboratorio', 'Bello', 'images/lab2.jpg'),
+(5, 'Aula2', 'aula', 'Bella', 'images/aula2.jpg'),
+(6, 'Aula_studio1', 'aula_studio', 'Bella', 'images/aula_studio1.jpg');
 
 -- --------------------------------------------------------
 
@@ -92,7 +89,9 @@ CREATE TABLE `utenti` (
 
 INSERT INTO `utenti` (`id`, `nome`, `email`, `password`, `ruolo`) VALUES
 (1, 'Diego', 'sdiego.illari@itis.pr.it', 'password1', 'studente'),
-(2, 'Mario', 'mario@gmail.com', 'mario', 'admin');
+(2, 'Mario', 'mario@gmail.com', 'mario', 'admin'),
+(5, 'vito', 'vito@x.com', '$2y$10$NvVDng1ohiHOUs5.1L.YHeHbaG.Mk1yk50Mfxk.fvVFozoRNC5Gs2', 'studente'),
+(7, 'matt', 'matteo310106.mp@gmail.com', '$2y$10$Cu9VVpkd9Tg6EfcgpLXuwuGOr1N70mR4T.vshLUaY.zo.nOkJio56', 'admin');
 
 --
 -- Indici per le tabelle scaricate
@@ -127,19 +126,19 @@ ALTER TABLE `utenti`
 -- AUTO_INCREMENT per la tabella `prenotazioni`
 --
 ALTER TABLE `prenotazioni`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT per la tabella `risorse`
 --
 ALTER TABLE `risorse`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT per la tabella `utenti`
 --
 ALTER TABLE `utenti`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Limiti per le tabelle scaricate
