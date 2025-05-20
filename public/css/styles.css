@@ -15,9 +15,15 @@
 body {
   margin: 0;
   font-family: var(--font);
-  background-color: var(--light);
+  background: 
+    linear-gradient(135deg, #f4f6f9, #e6ecf3),
+    url('images/moroccan-flower.png');  /* cambia con il nome effettivo */
+  background-repeat: repeat;
+  background-size: contain;
+  background-attachment: fixed;
   color: var(--primary);
 }
+
 
 header, footer {
   background-color: var(--primary);

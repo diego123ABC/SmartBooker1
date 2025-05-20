@@ -8,6 +8,7 @@
 <body>
 
 <header>
+ <!-- <img src="<?= base_url('images/logo.png') ?>" alt="Logo" style="height: 100px; margin-right: 1rem;"> -->
   <h1>SmartBooker</h1>
   <?php if (session()->has('user')): ?>
     <nav>
