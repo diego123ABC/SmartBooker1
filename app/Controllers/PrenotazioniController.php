@@ -59,6 +59,10 @@ class PrenotazioniController extends BaseController
             $inizio = strtotime($data['data_inizio']);
             $fine = strtotime($data['data_fine']);
             $durata = $fine - $inizio;
+            // Controlla che la durata sia positiva
+            if ($durata <= 0) {
+                return redirect()->back()->with('error', 'La data di inizio deve essere precedente alla data di fine.');
+            }
 
             if ($risorsa['tipo'] === 'stampante') {
                 // Solo 1 ora esatta
@@ -108,6 +112,20 @@ class PrenotazioniController extends BaseController
 
         if (!$data['data_inizio'] || !$data['data_fine']) {
             return redirect()->back()->with('error', 'Inserisci una data valida per la prenotazione');
+        }
+        // Controlla se la risorsa è già prenotata
+        $dateOccupate = $this->dateOccupate($data['risorsa_id']);
+        foreach ($dateOccupate as $occupata) {
+            if (
+                (strtotime($data['data_inizio']) >= strtotime($occupata['data_inizio']) &&
+                    strtotime($data['data_inizio']) < strtotime($occupata['data_fine'])) ||
+                (strtotime($data['data_fine']) > strtotime($occupata['data_inizio']) &&
+                    strtotime($data['data_fine']) <= strtotime($occupata['data_fine'])) ||
+                (strtotime($data['data_inizio']) <= strtotime($occupata['data_inizio']) &&
+                    strtotime($data['data_fine']) >= strtotime($occupata['data_fine']))
+            ) {
+                return redirect()->back()->with('error', 'La risorsa è già prenotata in questo intervallo.');
+            }
         }
 
         $model->insert($data);
