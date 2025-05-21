@@ -28,16 +28,9 @@ class AuthController extends BaseController
 
         // Verifica che esista e che la password corrisponda
         if ($user && password_verify($pass, $user['password'])) {
-            // (Opzionale) Re-hash se il cost factor è cambiato
-            if (password_needs_rehash($user['password'], PASSWORD_DEFAULT)) {
-                $model->update($user['id'], [
-                    'password' => password_hash($pass, PASSWORD_DEFAULT),
-                ]);
-            }
 
-            // Salva i dati in sessione (non includere mai l’hash!)
-            unset($user['password']);
-            $session->set('user', $user);
+            unset($user['password']); // Rimuovo la password hashata dalla sessione
+            $session->set('user', $user); // Salvo l'utente in sessione, con la relativa chiave per SSO
 
             return redirect()->to(base_url('home'))
                             ->with('success', 'Accesso effettuato con successo');

@@ -26,31 +26,29 @@ class AdminController extends BaseController
     }
 
     public function creaRisorsa()
-{
-    helper(['form']);
+    {
+        helper(['form']);
 
-    $model = new \App\Models\RisorsaModel();
+        $model = new \App\Models\RisorsaModel();
 
-    $file = $this->request->getFile('image');
-    $imagePath = null;
+        $file = $this->request->getFile('image');
+        $imagePath = null;
 
-    if ($file && $file->isValid() && !$file->hasMoved()) {
-        $newName = $file->getRandomName();
-        $file->move(ROOTPATH . 'public/images', $newName);
-        $imagePath = 'images/' . $newName;
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $newName = $file->getRandomName();
+            $file->move(ROOTPATH . 'public/images', $newName);
+            $imagePath = 'images/' . $newName;
+        }
+
+        $model->save([
+            'nome' => $this->request->getPost('nome'),
+            'tipo' => $this->request->getPost('tipo'),
+            'descrizione' => $this->request->getPost('descrizione'),
+            'image' => $imagePath
+        ]);
+
+        return redirect()->to(base_url('admin/risorse'))->with('success', 'Risorsa creata con successo.');
     }
-
-    $model->save([
-        'nome' => $this->request->getPost('nome'),
-        'tipo' => $this->request->getPost('tipo'),
-        'descrizione' => $this->request->getPost('descrizione'),
-        'image' => $imagePath
-    ]);
-
-    return redirect()->to(base_url('admin/risorse'))->with('success', 'Risorsa creata con successo.');
-}
-
-
 
     public function eliminaRisorsa($id)
     {
@@ -80,6 +78,7 @@ class AdminController extends BaseController
         $risorsa = $model->find($id);
         return view('admin/risorsa_modifica', ['risorsa' => $risorsa]);
     }
+
     public function aggiornaRisorsa($id)
     {
         $model = new RisorsaModel();

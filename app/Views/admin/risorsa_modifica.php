@@ -11,7 +11,7 @@
   <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
 <?php endif; ?>
 
-<form action="<?= base_url('risorse/aggiorna/' . $risorsa['id']) ?>" method="post">
+<form action="<?= base_url('admin/risorse/aggiorna/' . $risorsa['id']) ?>" method="post">
   <?= csrf_field() ?>
 
   <div class="form-group" style="margin-bottom: 1em;">
