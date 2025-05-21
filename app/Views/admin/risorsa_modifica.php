@@ -14,23 +14,23 @@
 <form action="<?= base_url('admin/risorse/aggiorna/' . $risorsa['id']) ?>" method="post">
   <?= csrf_field() ?>
 
-  <div class="form-group" style="margin-bottom: 1em;">
+  <div>
     <label for="nome">Nome</label>
-    <input type="text" class="form-control" id="nome" name="nome" value="<?= esc($risorsa['nome']) ?>" required>
+    <input type="text" id="nome" name="nome" value="<?= esc($risorsa['nome']) ?>" required>
   </div>
 
-  <div class="form-group" style="margin-bottom: 1em;">
+  <div>
     <label for="descrizione">Descrizione</label><br>
-    <textarea class="form-control" id="descrizione" name="descrizione" rows="4" required><?= esc($risorsa['descrizione']) ?></textarea>
+    <textarea id="descrizione" name="descrizione" rows="4" required><?= esc($risorsa['descrizione']) ?></textarea>
   </div>
 
-  <div class="form-group" style="margin-bottom: 1em;">
+  <div>
     <label for="image">Percorso immagine</label>
-    <input type="text" class="form-control" id="image" name="image" value="<?= esc($risorsa['image']) ?>">
+    <input type="text" id="image" name="image" value="<?= esc($risorsa['image']) ?>">
   </div>
 
-  <button type="submit" class="btn btn-primary">Salva modifiche</button>
-  <a href="<?= base_url('admin/risorse') ?>" class="btn btn-secondary">Annulla</a>
+  <button type="submit">Salva modifiche</button>
+  <a href="<?= base_url('admin/risorse') ?>">Annulla</a>
 </form>
 
 <?= $this->endSection() ?>

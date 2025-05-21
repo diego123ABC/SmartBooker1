@@ -29,7 +29,7 @@ class AuthController extends BaseController
         // Verifica che esista e che la password corrisponda
         if ($user && password_verify($pass, $user['password'])) {
 
-            unset($user['password']); // Rimuovo la password hashata dalla sessione
+            unset($user['password']); // Rimuovo la password hashata da i dati dell'utente, per non salvarla nella session
             $session->set('user', $user); // Salvo l'utente in sessione, con la relativa chiave per SSO
 
             return redirect()->to(base_url('home'))
