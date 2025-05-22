@@ -63,7 +63,10 @@ class PrenotazioniController extends BaseController
             if ($durata <= 0) {
                 return redirect()->back()->with('error', 'La data di inizio deve essere precedente alla data di fine.');
             }
-
+            // Controlla che la data di inizio non sia nel passato
+            if ($inizio < time()) {
+                return redirect()->back()->with('error', 'La data di inizio non può essere precedente a quella attuale.');
+            }
             if ($risorsa['tipo'] === 'stampante') {
                 // Solo 1 ora esatta
                 if ($durata !== 3600) {

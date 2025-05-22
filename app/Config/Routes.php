@@ -33,4 +33,5 @@ $routes->group('admin', ['filter' => 'auth'], function($routes) {
     $routes->get('prenotazioni', 'AdminController::listaPrenotazioni');
     $routes->get('prenotazioni/elimina/(:num)', 'AdminController::eliminaPrenotazione/$1');
 
+    $routes->get('prenotazioni/report', 'AdminController::reportPrenotazioni');
 });

@@ -20,5 +20,7 @@
 </ul>
 
 <a class="btn" href="<?= base_url('home') ?>">Torna alla home</a>
+<a style="float:right;" class="btn" href="<?= base_url('admin/prenotazioni/report') ?>">Report prenotazioni</a>
+
 
 <?= $this->endSection() ?>

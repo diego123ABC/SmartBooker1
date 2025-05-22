@@ -96,4 +96,13 @@ class AdminController extends BaseController
         (new PrenotazioneModel())->delete($id);
         return redirect()->to(base_url('admin/prenotazioni'))->with('success', 'Prenotazione eliminata.');
     }
+
+    public function reportPrenotazioni()
+{
+    $prenotazioneModel = new \App\Models\PrenotazioneModel();
+    $data = $prenotazioneModel->getTotalePrenotazioniPerRisorsa();
+
+    return view('admin/prenotazioni_report', ['report' => $data]);
+}
+
 }
