@@ -28,6 +28,13 @@ class HomeController extends BaseController
         $data_inizio = $this->request->getGet('data_inizio');
         $data_fine = $this->request->getGet('data_fine');
 
+        if (strtotime($data_inizio) > strtotime($data_fine)) {
+            return redirect()->back()->with('error', 'La data di inizio non può essere successiva alla data di fine.');
+        }
+
+        if (strtotime($data_inizio) < strtotime(date('Y-m-d'))) {
+            return redirect()->back()->with('error', 'La data di inizio non può essere precedente a oggi.');
+        }
         $model = new RisorsaModel();
         $risorse = $model->filterResources($tipo, $data_inizio, $data_fine);
 

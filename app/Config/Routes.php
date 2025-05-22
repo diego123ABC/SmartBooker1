@@ -28,10 +28,8 @@ $routes->group('admin', ['filter' => 'auth'], function($routes) {
     $routes->get('risorse/elimina/(:num)', 'AdminController::eliminaRisorsa/$1');
     $routes->get('risorse/modifica/(:num)', 'AdminController::modificaRisorsa/$1');
     $routes->post('risorse/aggiorna/(:num)', 'AdminController::aggiornaRisorsa/$1');
-    
 
     $routes->get('prenotazioni', 'AdminController::listaPrenotazioni');
     $routes->get('prenotazioni/elimina/(:num)', 'AdminController::eliminaPrenotazione/$1');
-
     $routes->get('prenotazioni/report', 'AdminController::reportPrenotazioni');
 });

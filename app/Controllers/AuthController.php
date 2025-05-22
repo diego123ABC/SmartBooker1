@@ -42,24 +42,51 @@ class AuthController extends BaseController
 
 
     public function attemptRegister()
-    {
-        $model = new UtenteModel();
-        $email = $this->request->getPost('email');
+{
+    $model = new UtenteModel();
+    $email = $this->request->getPost('email');
 
-        // Verifica se email è già registrata
-        if ($model->where('email', $email)->first()) {
-            return redirect()->to(base_url('register'))->with('error', 'Email già registrata');
-        }
-
-        $model->insert([
-            'nome'     => $this->request->getPost('nome'),
-            'email'    => $email,
-            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-            'ruolo'    => $this->request->getPost('ruolo'),
-        ]);
-
-        return redirect()->to(base_url())->with('success', 'Registrazione completata! Ora puoi accedere.');
+    // Verifica se email è già registrata
+    if ($model->where('email', $email)->first()) {
+        return redirect()->to(base_url('register'))->with('error', 'Email già registrata');
     }
+
+    // Regole di validazione
+    $validation = \Config\Services::validation();
+
+    $validationRules = [
+        'nome' => 'required|min_length[2]',
+        'email' => 'required|valid_email',
+        'password' => 'required|min_length[6]',
+    ];
+
+    $validationMessages = [
+        'email' => [
+            'required' => 'L\'email è obbligatoria',
+            'valid_email' => 'Inserisci un\'email valida'
+        ],
+        'password' => [
+            'required' => 'La password è obbligatoria',
+            'min_length' => 'La password deve avere almeno 6 caratteri'
+        ]
+    ];
+
+    if (!$validation->setRules($validationRules, $validationMessages)->withRequest($this->request)->run()) {
+        return redirect()->to(base_url('register'))
+            ->withInput()
+            ->with('error', implode(' ', $validation->getErrors()));
+    }
+
+    // Registrazione
+    $model->insert([
+        'nome'     => $this->request->getPost('nome'),
+        'email'    => $email,
+        'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+        'ruolo'    => $this->request->getPost('ruolo'),
+    ]);
+
+    return redirect()->to(base_url())->with('success', 'Registrazione completata! Ora puoi accedere.');
+}
 
     public function logout()
     {
